@@ -35,18 +35,11 @@ function InputForm(props) {
     e.preventDefault();
 
     addDataHandler(input);
-    setInput({
-      nim: "",
-      nama: "",
-      alamat: "",
-      jk: "",
-      hobi: "",
-      geo: input.geo,
-    });
+    resetText();
   };
 
   const resetText = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setInput({
       nim: "",
       nama: "",
@@ -59,11 +52,11 @@ function InputForm(props) {
   };
 
   const changeHandler = (e) => {
-    const { name, value, file } = e.target;
+    const { name, value } = e.target;
     // if (!(value || file)) console.log(e.target);
     setInput((prevData) => ({
       ...prevData,
-      [name]: value ?? file,
+      [name]: value,
     }));
   };
 
