@@ -60,7 +60,7 @@ function InputForm(props) {
 
   const changeHandler = (e) => {
     const { name, value, file } = e.target;
-    if (!(value || file)) console.log(e.target);
+    // if (!(value || file)) console.log(e.target);
     setInput((prevData) => ({
       ...prevData,
       [name]: value ?? file,
