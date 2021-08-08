@@ -1,24 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
+import Spinner from "react-activity/dist/Spinner";
 
 function InputForm(props) {
-  const { addDataHandler } = props;
-  const [isLoading, setLoading] = useState(false);
+  const { addDataHandler, isLoading } = props;
   const [input, setInput] = useState({
     nim: "",
     nama: "",
     alamat: "",
     jk: "",
     hobi: "",
-    geolocation: "None"
+    geo: "None",
+  });
+
+  useEffect(() => {
+    const setGeolocation = () => {
+      console.log("triggered");
+      if ("geolocation" in navigator && input.geo === "None") {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setInput((prevData) => ({
+            ...prevData,
+            geo: `${position.coords.latitude}, ${position.coords.longitude}`,
+          }));
+        });
+        console.log("Available");
+      } else {
+        console.log("Not Available");
+      }
+    };
+    setGeolocation();
   });
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    setLoading(true);
     addDataHandler(input);
-    setLoading(false);
+    setInput({
+      nim: "",
+      nama: "",
+      alamat: "",
+      jk: "",
+      hobi: "",
+      geo: input.geo,
+    });
   };
 
   const resetText = (e) => {
@@ -29,6 +53,7 @@ function InputForm(props) {
       alamat: "",
       jk: "",
       hobi: "",
+      geo: input.geo,
     });
     alert("Input di reset");
   };
@@ -42,8 +67,34 @@ function InputForm(props) {
     }));
   };
 
+  const overlayStyles = {
+    display: isLoading ? "block" : "none",
+    position: "absolute",
+    backgroundColor: "rgba(0,0,0,0.3)",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    color: "black",
+    textAlign: "center",
+  };
+
+  const spanStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+  };
+
   return (
-    <Form className="col-sm-12 col-md-4 py-2" onSubmit={submitHandler}>
+    <Form
+      className="col-sm-12 col-md-4 py-2"
+      onSubmit={submitHandler}
+      style={{ position: "relative" }}
+    >
+      <div style={overlayStyles}>
+        <Spinner style={spanStyle} />
+      </div>
       <Form.Group className="mb-3" controlId="form.ControlNIM">
         <Form.Label>NIM</Form.Label>
         <Form.Control
