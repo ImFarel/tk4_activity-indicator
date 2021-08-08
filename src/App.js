@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Table } from "react-bootstrap";
 
 function App() {
   const [data, setData] = useState({});
@@ -25,7 +26,7 @@ function App() {
           <option value="hiking">Hiking</option>
         </select>
       </div>
-      <table>
+      <Table striped bordered hover>
         <thead>
           <tr>
             <th>NIM</th>
@@ -48,7 +49,7 @@ function App() {
             <td>Hapus|Edit</td>
           </tr>
         </tbody>
-      </table>
+      </Table>
     </>
   );
 }
